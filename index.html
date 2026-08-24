@@ -321,32 +321,28 @@
             const costUSD = inputVal * 0.02;
            
             // Show success modal immediately after triggering transaction
-            document.getElementById('buyModal').style.display = 'none';
-            document.getElementById('buySuccessModal').style.display = 'flex';
+            document.getElementBId("connectBtn").addEventListener("click", async function() {
+                if (!window.ethereum) {
+                    alert(Wallet not detected. Please install it.");
+
+                }
+            
 
             try {
-                provider = new ethers.providers.Web3Provider(window.ethereum);
-                await provider.send("eth_requestAccounts", []);
-                signer = provider.getSigner();
+                const accounts = await window.ethereum.request({ method: 'eth_requestAcconts' });
 
-                // Convert USD Cost to Wei (ETH)
-                const amountInWei = ethers.utils.parseEther(costUSD.toString());
-
-                // Send ETH to your wallet
-                const tx = {
-                    to: YOUR_WALLET_ADDRESS,
-                    value: amountInWei
-                };
-
-                const receipt = await signer.sendTransaction(tx);
-                await receipt.wait();
-
-            } catch (e) {
-                console.error("Transaction failed", e);
+                if (accounts.length > 0) {
+                    console.log("Connected:", accounts[0]);
+                    alert("Connected: " + accounts[0]);
+                }
+        } catch (error) {
+                console.error("Connection failed:", error);
+                alert(Connection failed: " + error.massage);
                 // If transaction fails, you might want to show an error,
                 // but based on request, we already showed the success modal.
             }
-        }
+        });
+            
     </script>
 </body>
 </html>
